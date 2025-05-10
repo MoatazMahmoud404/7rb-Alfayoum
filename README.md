@@ -1,3 +1,5 @@
+We are a team of students from the College of Computer Science & AI at Ahram Canadian University. Our collaborative efforts are dedicated to developing Chicken Invaders, a project created as part of our coursework. We enjoy combining creativity with technical skills to build engaging and interactive gaming experiences.
+
 # Chicken Invaders 🐔🚀
 
 A modern space shooter game where players defend against waves of invading chickens. Built with Python and Pygame.
