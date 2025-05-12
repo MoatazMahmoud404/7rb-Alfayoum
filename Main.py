@@ -113,6 +113,7 @@ class AssetLoader:
 # ? 3. scale or rotate or not.
 # ? 4. draw in screen by block image transfer [blit] and fill Update the full screen
 
+
     def load_assets(self):
         # Load images
         self.images['background'] = pygame.image.load(
@@ -182,6 +183,18 @@ class AssetLoader:
         self.fonts['medium'] = pygame.font.Font(None, int(font_scale * 0.7))
         self.fonts['small'] = pygame.font.Font(None, int(font_scale * 0.5))
 
+        # Create placeholder sounds if they don't exist
+        self.create_placeholder_sounds()
+
+    def create_placeholder_sounds(self):
+        sound_list = ['shoot', 'explosion', 'powerup',
+                      'hit', 'select', 'pause', 'unpause', 'level_complete']
+        for sound_name in sound_list:
+            if sound_name not in self.sounds:
+                sound = mixer.Sound(buffer=bytearray(
+                    [random.randint(0, 255) for _ in range(1000)]))
+                self.sounds[sound_name] = sound
+
 
 class ChickenType:
     def __init__(self, name, image_path, health, speed, points, behavior_type, special_ability=None):
@@ -213,7 +226,7 @@ class ChickenType:
             'chiller1': ChickenType('Chiller 1', 'Images/Objects/Chickens/Chiller1.png', 40, 3, 325, 'straight', 'freeze'),
             'chiller2': ChickenType('Chiller 2', 'Images/Objects/Chickens/Chiller2.png', 50, 4, 350, 'zigzag', 'freeze'),
             'chiller3': ChickenType('Chiller 3', 'Images/Objects/Chickens/Chiller3.png', 60, 5, 375, 'circle', 'freeze'),
-            'ufo': ChickenType('UFO Chicken', 'Images/Objects/Chickens/UFOChicken.png', 55, 5, 425, 'teleport'),
+            'ufo': ChickenType('UFO Chicken', 'Images/Objects/Chickens/UFOChicken.png', 55, 5, 425, 'straight'),
             'submarine': ChickenType('Submarine Chicken', 'Images/Objects/Chickens/SubmarineChicken.PNG.png', 65, 3, 450, 'dive', 'submerge'),
             'slob': ChickenType('Slob Chicken', 'Images/Objects/Chickens/SlobChicken.png', 100, 1, 475, 'straight', 'eat'),
             'chickenaut': ChickenType('Chickenaut', 'Images/Objects/Chickens/Chickenaut.PNG.png', 75, 4, 500, 'straight', 'transform'),
@@ -244,7 +257,7 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.max_health = 100
         self.shoot_delay = 250
-        self.last_shot = pygame.time.get_ticks()  # ! Back Here
+        self.last_shot = pygame.time.get_ticks()
         self.lives = 3
         self.hidden = False
         self.hide_timer = pygame.time.get_ticks()
